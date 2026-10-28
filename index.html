@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relative Clause Practice · Randomized</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            background: #f2f5f9;
+            display: flex;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px -12px rgba(0, 20, 30, 0.25);
+            padding: 2rem 2rem 2.5rem;
+            transition: all 0.2s;
+        }
+
+        /* --- start screen --- */
+        .start-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.8rem;
+            padding: 1.5rem 0 0.5rem;
+        }
+
+        .start-screen h1 {
+            font-size: 2.1rem;
+            font-weight: 600;
+            color: #0b2b3b;
+            letter-spacing: -0.02em;
+            border-bottom: 3px solid #3a7ca5;
+            padding-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: #1d3b4f;
+            font-size: 1rem;
+        }
+
+        .form-group input {
+            padding: 0.9rem 1.2rem;
+            border: 1.5px solid #cbdae6;
+            border-radius: 60px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.15s, box-shadow 0.15s;
+            background: #fbfdff;
+        }
+
+        .form-group input:focus {
+            border-color: #3a7ca5;
+            box-shadow: 0 0 0 4px rgba(58, 124, 165, 0.15);
+        }
+
+        .btn {
+            background: #1f5e7a;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.9rem 2.5rem;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 6px 14px rgba(27, 74, 94, 0.3);
+            letter-spacing: 0.3px;
+            margin-top: 0.8rem;
+        }
+
+        .btn:hover {
+            background: #0f435b;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-secondary {
+            background: #e7eef4;
+            color: #1d3b4f;
+            box-shadow: none;
+            border: 1px solid #b8cfdf;
+            font-weight: 500;
+        }
+
+        .btn-secondary:hover {
+            background: #d2e0ea;
+        }
+
+        /* --- test screen --- */
+        .test-screen {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .user-badge {
+            background: #e7f0f7;
+            border-radius: 40px;
+            padding: 0.6rem 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.95rem;
+            color: #1d3b4f;
+            align-self: flex-start;
+            border: 1px solid #c2d8e8;
+            flex-wrap: wrap;
+        }
+
+        .user-badge span {
+            font-weight: 600;
+            color: #0a3142;
+        }
+
+        .progress-indicator {
+            background: #f0f7fc;
+            border-radius: 40px;
+            padding: 0.5rem 1.4rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #1a4a61;
+            border: 1px solid #cfe0ed;
+            display: inline-block;
+        }
+
+        .question-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.4rem;
+            margin: 0.5rem 0 0.8rem;
+        }
+
+        .question-item {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 1.2rem 1.6rem;
+            border: 1px solid #d9e5f0;
+            transition: box-shadow 0.2s;
+        }
+
+        .question-item:hover {
+            box-shadow: 0 6px 16px rgba(0, 33, 55, 0.06);
+        }
+
+        .question-item.unanswered-warning {
+            border-color: #e6a8a8;
+            background: #fff9f9;
+            box-shadow: 0 0 0 3px rgba(200, 70, 70, 0.08);
+        }
+
+        .question-text {
+            font-weight: 500;
+            font-size: 1.05rem;
+            color: #0a293b;
+            margin-bottom: 0.8rem;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .question-number {
+            font-weight: 700;
+            color: #3a7ca5;
+            min-width: 1.8rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            padding-left: 2rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            font-size: 0.98rem;
+            color: #1f4055;
+            cursor: pointer;
+            padding: 0.25rem 0;
+        }
+
+        .option input[type="radio"] {
+            margin-top: 0.2rem;
+            accent-color: #2c6f8f;
+            width: 1.1rem;
+            height: 1.1rem;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .option label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .submit-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1.2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .submit-warning {
+            color: #b33f3f;
+            font-weight: 500;
+            font-size: 0.95rem;
+            background: #fef3f3;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid #e6bebe;
+        }
+
+        /* --- result screen --- */
+        .result-screen {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .result-header {
+            background: linear-gradient(145deg, #e2eef9, #d1e2f0);
+            padding: 1.6rem 2rem;
+            border-radius: 28px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .result-header .info h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0a2f40;
+            margin-bottom: 0.2rem;
+        }
+
+        .result-header .info p {
+            font-size: 1rem;
+            color: #1d4b61;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.8rem;
+        }
+
+        .result-header .info span.value {
+            font-weight: 700;
+            color: #103d52;
+        }
+
+        .score-box {
+            background: #1e4e63;
+            color: white;
+            padding: 0.9rem 2rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.9rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: baseline;
+            gap: 0.3rem;
+        }
+
+        .score-box small {
+            font-size: 1rem;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-left: 0.3rem;
+        }
+
+        .review-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .review-item {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1.2rem 1.6rem;
+            border-left: 6px solid #b0c9db;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.6rem 1.2rem;
+        }
+
+        .review-item.correct {
+            border-left-color: #2a9d8f;
+            background: #f5fdfb;
+        }
+
+        .review-item.incorrect {
+            border-left-color: #d45a5a;
+            background: #fef7f7;
+        }
+
+        .review-q {
+            font-weight: 600;
+            color: #123b4e;
+            display: flex;
+            gap: 10px;
+            flex: 1 1 200px;
+        }
+
+        .review-detail {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem 2rem;
+            font-size: 0.95rem;
+            color: #1e3f52;
+        }
+
+        .review-detail .item {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .review-detail .label {
+            font-weight: 500;
+            color: #4f6f82;
+        }
+
+        .review-detail .user-ans {
+            font-weight: 600;
+        }
+
+        .correct-ans {
+            color: #1d7a6b;
+            font-weight: 600;
+        }
+
+        .wrong-ans {
+            color: #b33f3f;
+            font-weight: 600;
+        }
+
+        .badge-ok {
+            background: #dff3ef;
+            color: #1d6b5e;
+            padding: 0.1rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        .back-link {
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 700px) {
+            .app-container { padding: 1.5rem; }
+            .result-header { flex-direction: column; align-items: flex-start; }
+            .score-box { align-self: flex-start; }
+            .question-text { font-size: 1rem; }
+            .options { padding-left: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container" id="appContainer">
+        <!-- START SCREEN -->
+        <div id="startScreen" class="start-screen">
+            <h1>📝 Relative Clause Practice</h1>
+            <div class="form-group">
+                <label for="fullName">Full name</label>
+                <input type="text" id="fullName" placeholder="e.g., Alex Rivera" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="studyProgram">Study program</label>
+                <input type="text" id="studyProgram" placeholder="e.g., English Education" autocomplete="off">
+            </div>
+            <button class="btn" id="startBtn">Start test →</button>
+        </div>
+
+        <!-- TEST SCREEN -->
+        <div id="testScreen" class="test-screen hidden">
+            <div class="user-badge" id="userBadge">
+                👤 <span id="badgeName"></span> · <span id="badgeProgram"></span>
+                <span class="progress-indicator" id="progressIndicator">0 / 50 answered</span>
+            </div>
+
+            <div class="question-list" id="questionList"></div>
+
+            <div class="submit-container">
+                <span id="submitWarning" class="submit-warning hidden">⚠️ Please answer all questions before submitting.</span>
+                <button class="btn" id="submitBtn">Submit test ✓</button>
+            </div>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div id="resultScreen" class="result-screen hidden">
+            <div class="result-header" id="resultHeader"></div>
+            <div class="review-list" id="reviewList"></div>
+            <div class="back-link">
+                <button class="btn btn-secondary" id="restartBtn">↺ Take again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- 50 Relative Clause Questions (original index preserved) ----------
+            const rawQuestions = [
+                { text: "The woman ______ lives next door is a doctor.", options: ["which", "who", "where"], answer: 1 }, // B
+                { text: "I bought a book. It explains English grammar.", options: ["I bought a book who explains English grammar.", "I bought a book where explains English grammar.", "I bought a book that explains English grammar."], answer: 2 }, // C
+                { text: "This is the restaurant ______ we had dinner last night.", options: ["where", "who", "whose"], answer: 0 }, // A
+                { text: "The boy ______ bicycle was stolen reported it to the police.", options: ["whom", "whose", "which"], answer: 1 }, // B
+                { text: "My uncle, ______ lives in Bali, visits us every year.", options: ["which", "where", "who"], answer: 2 }, // C
+                { text: "The laptop ______ I purchased yesterday is already broken.", options: ["who", "which", "where"], answer: 1 }, // B
+                { text: "I know a girl. Her father is a famous chef.", options: ["I know a girl whose father is a famous chef.", "I know a girl which father is a famous chef.", "I know a girl who father is a famous chef."], answer: 0 }, // A
+                { text: "The man ______ you met at the party is my teacher.", options: ["where", "whose", "whom"], answer: 2 }, // C
+                { text: "The school ______ my mother works is near our house.", options: ["where", "who", "which"], answer: 0 }, // A
+                { text: "The movie ______ we watched yesterday was exciting.", options: ["where", "that", "whose"], answer: 1 }, // B
+                { text: "The student ______ won the competition received a medal.", options: ["which", "where", "who"], answer: 2 }, // C
+                { text: "I visited a museum. It displays ancient paintings.", options: ["I visited a museum who displays ancient paintings.", "I visited a museum that displays ancient paintings.", "I visited a museum where displays ancient paintings."], answer: 1 }, // B
+                { text: "The woman ______ car was damaged called the police.", options: ["whose", "who", "whom"], answer: 0 }, // A
+                { text: "This is the park ______ we usually play football.", options: ["whose", "who", "where"], answer: 2 }, // C
+                { text: "The teacher ______ teaches us science is very patient.", options: ["who", "which", "whose"], answer: 0 }, // A
+                { text: "I have a friend. He speaks four languages.", options: ["I have a friend which speaks four languages.", "I have a friend who speaks four languages.", "I have a friend where speaks four languages."], answer: 1 }, // B
+                { text: "The cake ______ she made tasted delicious.", options: ["who", "where", "which"], answer: 2 }, // C
+                { text: "The man to ______ I spoke was very helpful.", options: ["whom", "whose", "which"], answer: 0 }, // A
+                { text: "The city ______ my grandparents were born is famous for its beaches.", options: ["who", "where", "whose"], answer: 1 }, // B
+                { text: "Sarah met a writer. The writer lives in London.", options: ["Sarah met a writer which lives in London.", "Sarah met a writer whose lives in London.", "Sarah met a writer who lives in London."], answer: 2 }, // C
+                { text: "The dog ______ barked all night belongs to our neighbor.", options: ["which", "where", "whose"], answer: 0 }, // A
+                { text: "The woman ______ I called this morning did not answer.", options: ["whose", "whom", "where"], answer: 1 }, // B
+                { text: "I found a wallet. It belonged to my brother.", options: ["I found a wallet who belonged to my brother.", "I found a wallet that belonged to my brother.", "I found a wallet where belonged to my brother."], answer: 1 }, // B
+                { text: "The reason ______ he left early was unclear.", options: ["why", "who", "whose"], answer: 0 }, // A
+                { text: "The students ______ homework was incomplete had to stay after class.", options: ["whom", "which", "whose"], answer: 2 }, // C
+                { text: "This is the shop ______ sells handmade bags.", options: ["who", "where", "that"], answer: 2 }, // C
+                { text: "I met a woman. She works at the airport.", options: ["I met a woman who works at the airport.", "I met a woman where works at the airport.", "I met a woman whose works at the airport."], answer: 0 }, // A
+                { text: "The house ______ roof is red belongs to my aunt.", options: ["which", "whose", "whom"], answer: 1 }, // B
+                { text: "The day ______ we first met was unforgettable.", options: ["who", "where", "when"], answer: 2 }, // C
+                { text: "The phone ______ is on the table belongs to Daniel.", options: ["who", "which", "whose"], answer: 1 }, // B
+                { text: "I know the man. You spoke to him yesterday.", options: ["I know the man whom you spoke to yesterday.", "I know the man which you spoke to yesterday.", "I know the man where you spoke to yesterday."], answer: 0 }, // A
+                { text: "The girl ______ is wearing a blue jacket is my cousin.", options: ["whose", "who", "where"], answer: 1 }, // B
+                { text: "We visited a village ______ people make traditional pottery.", options: ["whom", "whose", "where"], answer: 2 }, // C
+                { text: "I bought a camera. It takes excellent photos.", options: ["I bought a camera where takes excellent photos.", "I bought a camera that takes excellent photos.", "I bought a camera who takes excellent photos."], answer: 1 }, // B
+                { text: "The employee ______ helped me was very polite.", options: ["who", "which", "whose"], answer: 0 }, // A
+                { text: "The woman ______ son studies with me is a dentist.", options: ["whom", "where", "whose"], answer: 2 }, // C
+                { text: "I remember the moment. We heard the news then.", options: ["I remember the moment where we heard the news.", "I remember the moment when we heard the news.", "I remember the moment who we heard the news."], answer: 1 }, // B
+                { text: "The flowers ______ you sent me were beautiful.", options: ["which", "who", "where"], answer: 0 }, // A
+                { text: "The boy ______ father is a pilot wants to become one too.", options: ["whom", "whose", "which"], answer: 1 }, // B
+                { text: "I met a singer. Her songs are popular worldwide.", options: ["I met a singer who songs are popular worldwide.", "I met a singer which songs are popular worldwide.", "I met a singer whose songs are popular worldwide."], answer: 2 }, // C
+                { text: "The restaurant ______ serves Italian food is always crowded.", options: ["that", "where", "who"], answer: 0 }, // A
+                { text: "The person ______ called you left a message.", options: ["which", "who", "whose"], answer: 1 }, // B
+                { text: "This is the hotel. We stayed there during our holiday.", options: ["This is the hotel who we stayed during our holiday.", "This is the hotel whose we stayed during our holiday.", "This is the hotel where we stayed during our holiday."], answer: 2 }, // C
+                { text: "The book ______ cover is torn belongs to the library.", options: ["whose", "whom", "who"], answer: 0 }, // A
+                { text: "The children ______ were playing outside went home at sunset.", options: ["where", "who", "whose"], answer: 1 }, // B
+                { text: "I know a teacher. She teaches Japanese.", options: ["I know a teacher which teaches Japanese.", "I know a teacher where teaches Japanese.", "I know a teacher who teaches Japanese."], answer: 2 }, // C
+                { text: "The village ______ we spent our childhood has changed a lot.", options: ["where", "whose", "whom"], answer: 0 }, // A
+                { text: "The student ______ essay won first prize was very happy.", options: ["which", "whose", "whom"], answer: 1 }, // B
+                { text: "The bicycle ______ my father repaired works perfectly now.", options: ["where", "who", "that"], answer: 2 }, // C
+                { text: "I visited my aunt. She lives in Surabaya.", options: ["I visited my aunt which lives in Surabaya.", "I visited my aunt who lives in Surabaya.", "I visited my aunt where lives in Surabaya."], answer: 1 } // B
+            ];
+
+            // State
+            let userAnswers = new Array(rawQuestions.length).fill(null); // index refers to rawQuestions index
+            let fullName = '';
+            let studyProgram = '';
+            let startTime = null;
+            let testCompleted = false;
+
+            // DOM elements
+            const startScreen = document.getElementById('startScreen');
+            const testScreen = document.getElementById('testScreen');
+            const resultScreen = document.getElementById('resultScreen');
+            const fullNameInput = document.getElementById('fullName');
+            const studyProgramInput = document.getElementById('studyProgram');
+            const startBtn = document.getElementById('startBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            const restartBtn = document.getElementById('restartBtn');
+            const questionList = document.getElementById('questionList');
+            const badgeName = document.getElementById('badgeName');
+            const badgeProgram = document.getElementById('badgeProgram');
+            const progressIndicator = document.getElementById('progressIndicator');
+            const submitWarning = document.getElementById('submitWarning');
+            const resultHeader = document.getElementById('resultHeader');
+            const reviewList = document.getElementById('reviewList');
+
+            // ---------- shuffle function (Fisher-Yates) ----------
+            function shuffleArray(arr) {
+                const a = [...arr];
+                for (let i = a.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [a[i], a[j]] = [a[j], a[i]];
+                }
+                return a;
+            }
+
+            // ---------- render questions in randomized order ----------
+            function renderQuestions() {
+                if (!questionList) return;
+
+                // Create array of indices [0,1,...,49] and shuffle
+                const indices = Array.from({ length: rawQuestions.length }, (_, i) => i);
+                const shuffledIndices = shuffleArray(indices);
+
+                let html = '';
+                shuffledIndices.forEach((rawIdx, displayIdx) => {
+                    const q = rawQuestions[rawIdx];
+                    const displayNum = displayIdx + 1; // 1-based display number
+                    html += `<div class="question-item" id="q-${rawIdx}" data-rawidx="${rawIdx}">`;
+                    html += `<div class="question-text"><span class="question-number">${displayNum}.</span> ${q.text}</div>`;
+                    html += `<div class="options">`;
+                    q.options.forEach((opt, optIdx) => {
+                        const letter = String.fromCharCode(97 + optIdx); // a,b,c
+                        const checked = (userAnswers[rawIdx] === optIdx) ? 'checked' : '';
+                        html += `<label class="option">
+                                    <input type="radio" name="q${rawIdx}" value="${optIdx}" data-rawidx="${rawIdx}" ${checked}>
+                                    <span>${letter}. ${opt}</span>
+                                </label>`;
+                    });
+                    html += `</div></div>`;
+                });
+                questionList.innerHTML = html;
+
+                // Attach change listeners
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.addEventListener('change', function(e) {
+                        const rawIdx = parseInt(this.dataset.rawidx);
+                        const val = parseInt(this.value);
+                        if (!isNaN(rawIdx) && !isNaN(val)) {
+                            userAnswers[rawIdx] = val;
+                            updateProgress();
+                            // remove warning highlight
+                            const qItem = document.getElementById(`q-${rawIdx}`);
+                            if (qItem) qItem.classList.remove('unanswered-warning');
+                            // hide warning message if all answered
+                            if (userAnswers.every(a => a !== null)) {
+                                submitWarning.classList.add('hidden');
+                            }
+                        }
+                    });
+                });
+
+                // initial progress update
+                updateProgress();
+            }
+
+            // ---------- update progress indicator ----------
+            function updateProgress() {
+                const answered = userAnswers.filter(a => a !== null).length;
+                progressIndicator.textContent = `${answered} / ${rawQuestions.length} answered`;
+            }
+
+            // ---------- helper: format time ----------
+            function formatDuration(ms) {
+                const totalSec = Math.floor(ms / 1000);
+                const min = Math.floor(totalSec / 60);
+                const sec = totalSec % 60;
+                return `${min} min ${sec} sec`;
+            }
+
+            // ---------- show test screen ----------
+            function showTestScreen() {
+                startScreen.classList.add('hidden');
+                resultScreen.classList.add('hidden');
+                testScreen.classList.remove('hidden');
+
+                badgeName.textContent = fullName || 'Student';
+                badgeProgram.textContent = studyProgram || '—';
+
+                // Reset answers if re-entering? We'll keep if going back? Actually from start we cleared already.
+                // But for restart we clear in restart function.
+                renderQuestions();
+            }
+
+            // ---------- start test ----------
+            function startTest() {
+                const name = fullNameInput.value.trim();
+                const program = studyProgramInput.value.trim();
+                if (!name) {
+                    alert('Please enter your full name.');
+                    return;
+                }
+                if (!program) {
+                    alert('Please enter your study program.');
+                    return;
+                }
+                fullName = name;
+                studyProgram = program;
+                userAnswers = new Array(rawQuestions.length).fill(null);
+                startTime = Date.now();
+                testCompleted = false;
+                submitWarning.classList.add('hidden');
+                showTestScreen();
+            }
+
+            // ---------- compute score ----------
+            function computeScore() {
+                let correct = 0;
+                rawQuestions.forEach((q, idx) => {
+                    if (userAnswers[idx] === q.answer) correct++;
+                });
+                return { correct, total: rawQuestions.length };
+            }
+
+            // ---------- build result screen ----------
+            function showResult() {
+                const endTime = Date.now();
+                const durationMs = endTime - startTime;
+                const timeStr = formatDuration(durationMs);
+                const { correct, total } = computeScore();
+
+                // Header
+                resultHeader.innerHTML = `
+                    <div class="info">
+                        <h2>${fullName}</h2>
+                        <p>
+                            <span>📚 <span class="value">${studyProgram}</span></span>
+                            <span>⏱️ Time taken: <span class="value">${timeStr}</span></span>
+                        </p>
+                    </div>
+                    <div class="score-box">${correct}<small>/${total}</small></div>
+                `;
+
+                // Review list – we'll show in the same randomized order as displayed?
+                // The user probably wants to see the questions in the order they were presented.
+                // Since we have rawIndices, we can reconstruct the shuffled order.
+                // Actually we can store the shuffled order from render. We'll re-shuffle? Better store globally.
+                // Let's store the shuffled indices in a variable.
+                // We'll modify renderQuestions to save to a global.
+                // Quick fix: recalculate from DOM? We can fetch from DOM order.
+                // Simpler: re-render from DOM order by reading .question-item data-rawidx
+                const items = document.querySelectorAll('.question-item');
+                let orderedRawIndices = [];
+                if (items.length) {
+                    items.forEach(item => {
+                        const rawIdx = parseInt(item.dataset.rawidx);
+                        if (!isNaN(rawIdx)) orderedRawIndices.push(rawIdx);
+                    });
+                } else {
+                    // fallback: just use 0..49
+                    orderedRawIndices = Array.from({ length: rawQuestions.length }, (_, i) => i);
+                }
+
+                let reviewHtml = '';
+                orderedRawIndices.forEach((rawIdx, displayIdx) => {
+                    const q = rawQuestions[rawIdx];
+                    const userAns = userAnswers[rawIdx];
+                    const isCorrect = (userAns === q.answer);
+                    const userLetter = (userAns !== null && userAns !== undefined) ? String.fromCharCode(97 + userAns) : '—';
+                    const correctLetter = String.fromCharCode(97 + q.answer);
+                    const userText = (userAns !== null && userAns !== undefined) ? q.options[userAns] : 'Not answered';
+                    const correctText = q.options[q.answer];
+
+                    reviewHtml += `<div class="review-item ${isCorrect ? 'correct' : 'incorrect'}">
+                        <div class="review-q"><span class="question-number">${displayIdx+1}.</span> ${q.text}</div>
+                        <div class="review-detail">
+                            <div class="item"><span class="label">Your answer:</span> 
+                                <span class="${isCorrect ? 'correct-ans' : 'wrong-ans'}">${userLetter}. ${userText}</span>
+                            </div>
+                            <div class="item"><span class="label">Key:</span> 
+                                <span class="correct-ans">${correctLetter}. ${correctText}</span>
+                            </div>
+                            ${isCorrect ? '<span class="badge-ok">✓ correct</span>' : ''}
+                        </div>
+                    </div>`;
+                });
+                reviewList.innerHTML = reviewHtml;
+
+                // switch screens
+                startScreen.classList.add('hidden');
+                testScreen.classList.add('hidden');
+                resultScreen.classList.remove('hidden');
+            }
+
+            // ---------- submit ----------
+            function onSubmit() {
+                // Check if all answered
+                const unansweredRawIndices = [];
+                userAnswers.forEach((ans, idx) => {
+                    if (ans === null || ans === undefined) unansweredRawIndices.push(idx);
+                });
+
+                if (unansweredRawIndices.length > 0) {
+                    // show warning and highlight
+                    submitWarning.classList.remove('hidden');
+                    submitWarning.textContent = `⚠️ Please answer all questions. ${unansweredRawIndices.length} question(s) unanswered.`;
+
+                    // Highlight each unanswered question
+                    unansweredRawIndices.forEach(rawIdx => {
+                        const qItem = document.getElementById(`q-${rawIdx}`);
+                        if (qItem) qItem.classList.add('unanswered-warning');
+                    });
+
+                    // scroll to first unanswered
+                    const firstUnanswered = document.getElementById(`q-${unansweredRawIndices[0]}`);
+                    if (firstUnanswered) firstUnanswered.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    return; // prevent submission
+                }
+
+                if (testCompleted) return;
+                testCompleted = true;
+                showResult();
+            }
+
+            // ---------- restart ----------
+            function restart() {
+                // reset state
+                userAnswers = new Array(rawQuestions.length).fill(null);
+                fullName = '';
+                studyProgram = '';
+                startTime = null;
+                testCompleted = false;
+
+                fullNameInput.value = '';
+                studyProgramInput.value = '';
+
+                startScreen.classList.remove('hidden');
+                testScreen.classList.add('hidden');
+                resultScreen.classList.add('hidden');
+                submitWarning.classList.add('hidden');
+            }
+
+            // ---------- event listeners ----------
+            startBtn.addEventListener('click', startTest);
+            submitBtn.addEventListener('click', onSubmit);
+            restartBtn.addEventListener('click', restart);
+
+            // allow pressing Enter in inputs to start
+            fullNameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    studyProgramInput.focus();
+                }
+            });
+            studyProgramInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    startTest();
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>
